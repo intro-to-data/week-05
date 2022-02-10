@@ -1,295 +1,301 @@
 ---
-title: "Week 05 NYC Flights"
+title: "Diamonds are forever"
 output: html_notebook
 ---
 
-This lab is tied CLOSELY to the assigned reading. If you have not yet done so, I recommend reading the book before attempting this lab.
-
-
-
 # Setup
 
-# This code chunk will clear anything left from the lecture session and it will import all of the data we need for the lab. This data set comes from the NYC Flights 2013 data set.
-
-- [PDF Documentation of data](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf)
-- Contains five tables.
-- The code chunk will let you page through the five data sets to look at each.
-
-```{r}
-rm(list = ls())
-library(knitr)
+```{r setup, include=FALSE}
 library(tidyverse)
-library(nycflights13)
-source("R/load_nycflights.R")
-airlines
-airports
-planes
-weather
-flights
+diamonds <- read_csv("data/diamonds.csv")
 ```
 
-Things to notice:
-
-- Look at the global environment, you have some new tables to enjoy.
-- Each flight has a single airplane.
-- But, since we do reuse airplanes, airplanes can be on multiple rows in `flights`.
-- We can use the `carrier` column to connect `flights` and `airlines`.
-- Obviously, airlines have many flights/planes.
-
-# Lab
-
-Below are the tasks for this lab. The goal is to better understand how different tables, each with their own grain, can be used in concert to answer more complex questions.
-
-
-## Task 01: PRIMARY KEYS
-
-- A primary key is the column (sometimes columns) which uniquely identify an observation in that table. For example, in the `planes` table, the column `tailnum` is the primary key.
-- The follow code proves this fact.
+# Data
 
 ```{r}
-## Task 03: PRIMARY KEYS (Planes)
-
-## How many rows of data are in planes?
-rows_planes <- planes %>% nrow()
-
-## How many unique entries do we have for tailnum?
-unique_tailnum <- planes %>% select(tailnum) %>% distinct() %>% nrow()
-
-## This tests for equality. If you did everything right, it should return TRUE.
-rows_planes == unique_tailnum
+diamonds
 ```
 
-The planes data set has 3,322 rows, shown as `obs` in RStudio. There are 3,322 unique (distinct) tailnums in the `tailnum` column. Because these two counts are the same, tailnum can be used as a primary key. Let's do the same thing with the `model` column to prove the point.
+## Columns
 
-```{r}
-## How many rows of data are in planes?
-rows_planes <- planes %>% nrow()
+A data frame with 53940 rows and 10 variables:
 
-## How many unique entries do we have for tailnum?
-unique_model <- planes %>% select(model) %>% distinct() %>% nrow()
+- carat: weight of the diamond (0.2–5.01)
+- cut: quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+- color: diamond colour, from D (best) to J (worst)
+- clarity: a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+- depth: total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43–79)
+- table: width of top of diamond relative to widest point (43–95)
+- price: price in US dollars (\$326–\$18,823)
+- x: length in mm (0–10.74)
+- y: width in mm (0–58.9)
+- z: depth in mm (0–31.8)
 
-## This tests for equality. If you did everything right, it should return TRUE.
-rows_planes == unique_model
-```
+# Task 01
 
-This should return FALSE, because while there are STILL 3,322 rows of data in `planes`, there are only 127 unique models of plane. This means at least some of the models have more than one entry. Another way to explain the idea of a primary key is that this column (or columns) can be used to return a single row of data. For example, run the following code chunk.
-
-```{r}
-## Using tailnum, we can identify a single, unique plane in planes.
-## Once you know the primary key, you should also know more about the
-## grain of the table.
-planes %>% filter(tailnum == "N137DL")
-
-## N137DL was built by BOEING. It was built in 1991, so it is probably safe to
-## ride on. It isn't a 737 MAX. But to prove that manufacturer is not the 
-## primary key, try this:
-planes %>% filter(model == "767-322")
-```
-
-The grain of the planes table should (now) be obvious. The planes table is a set of unique planes!  Each row in the planes table is a unique plane (tailnum), not a unique plane model.
-
-You do not need to enter anything into Canvas for this task, but take your time looking at what is going on in these tables.
-
-
-## Task 02: PRIMARY KEYS (Airports)
-
-- Figure out which column in the `airports` table is the primary key. Feel free to re-use the code from Task 01 to help you.
-- If you want more information about the `airports` table, you can use R's built-in help tool. Data sets that come with an R package, like `airports` are required to come with documentation. To see it enter `?airports` in the console. This works the same way all documentation works in R. For example, to read the documentation for the `nrow` function, you can use this: `?nrow`.
-- Reading the documentation (sometimes called metadata) about a table is always a good idea, when it is available.
-- The primary key should always be the _simplest_ unique combination possible.
-    - If given the choice between a code column and a full name column, the code col is preferable. Codes tend to be assigned by a third-party authority. Names are usually the Wild Wild West.
-    - If given the choice between a multi-column primary key and a single-column primary key, the latter is ALWAYS preferable, if it is truly unique.
-    - I know programming seems complicated, but simplicity is preferred where possible.
-
-```{r}
-## YOU CODE HERE!
-
-```
-
-- Pleae record your answer in Canvas.
-- Your options are: 
-    - `alt`
-    - `dst`
-    - `faa`
-    - `lat`
-    - `lon`
-    - `name`
-    - `tz`
-    - `tzone`
-
-
-## Task 03: FOREIGN KEYS
-
-- A foreign key is a column in a table that "maps" to a primary key in another table. While a primary key _must_ be unique, a foreign key can have duplicates.
-- For example, the `tailnum` column in `flights` maps to the `tailnum` column in `planes`. 
-- In planes, `tailnum` N807AW has exactly one entry.
+- **Question:** Which columns are categorical variables? Which columns are continuous variables?
+- **Answer:**
 
 ```{r}
 ## YOUR CODE HERE!
 
-planes %>% filter(tailnum == "N807AW")
-
-## HINT: This is not the answer to the task, but it will help you answer the task.
 ```
 
-How many entries does tailnum _N807AW_ have in flights? Once you know, record your answer in Canvas.
 
 
+# Task 02
 
-## Task 04: ERDs
+- **Question:** What is the most common cut of diamond and how many of these are there?
+- **Answer:**
 
-- A good way to visually show the relationships between a set of tables is called an Entity Relationship Diagram (ERD).
-- In real life, these are about as common as unicorns, when available they are AWESOME.
-- When I am not given one, I will spend the time to draw one for myself.
-- For example, for our Flights NYC 13 data:
-
-```{r task_04}
-url <- "https://d33wubrfki0l68.cloudfront.net/245292d1ea724f6c3fd8a92063dcd7bfb9758d02/5751b/diagrams/relational-nycflights.png"
-knitr::include_graphics(url)
-```
-
-The key to understanding diagrams like this is to remember each relation always concerns a pair of tables. You don’t need to understand the whole thing; you just need to understand the chain of relations between the tables that you are interested in.
-
-For nycflights13:
-
-- flights connects to planes via a single variable, tailnum.
-- flights connects to airports in two ways: via the origin and dest variables.
-- flights connects to weather via origin (the location), and year,
-  month, day and hour (the time).
-
-Based on what you can see in the ERD above, what column(s) are used to connect `flights` to `airlines`? In other words, what is the foreign key in `flights`? You do not need to write any R code to complete this task.
-
- - air_time
- - arr_delay
- - arr_time
- - carrier
- - day
- - dep_delay
- - dep_time
- - dest
- - distance
- - flight
- - hour
- - minute
- - month
- - origin
- - sched_arr_time
- - sched_dep_time
- - tailnum
- - time_hour
- - year
- 
- 
-## Task 05: INNER JOIN
- 
-Based on your answer above, write an inner join between `flights` and `airlines`.
-
-- I recommend you save the results in a new variable, but that is your choice.
-- But if you don't, you are going to do a lot of copying/pasting.
-- You can use the assignment operation, `<-` to create a new variable, saving the results of this join.
-- Have you noticed that columns in join statements have to be in quotations? The reasons for this are complicated, but it is a common mistake/gotcha that trips people up so I'm warning you about it here.
-
-```{r task_05}
-## HINT: Replace the ?
-flights %>% inner_join(airlines, by = "?")
-```
-
-In canvas, tell me how many rows the resulting table has. 
-
-Missing/Duplicate values in a key could either increase, decrease, or not affect the number of rows returned. If there were missing values in the foreign key in flights, how would it change the number of rows returned? If there were duplicate values in the key in the airlines table, how would it change the number of rows returned?
-
-Hint, there are two hypotheticals. I want you to address both and they answer may not be the same.
-
-
-## Task 06: MOST COMMON CARRIER
-
-- Based on your code from Task 05, what is the most common carrier in our data?
-- In Task 05, you merged the two tables using a mutating join.
-- Now you need to do a single-table transformation of that result-set to determine the most common carrier. You can do this one of two ways:
-    - Save the results of Task 05 to a new variable (call it whatever you want).
-    - Copy/paste the code and add your group by and summarize options after the join statement.
-
-```{r task_06}
+```{r}
 ## YOUR CODE HERE!
 
 ```
 
-What is the most common carrier in our data? Our choices are:
 
-- AirTran Airways Corporation
-- Alaska Airlines Inc.
-- American Airlines Inc.
-- Delta Air Lines Inc.
-- Endeavor Air Inc.
-- Envoy Air
-- ExpressJet Airlines Inc.
-- Frontier Airlines Inc.
-- Hawaiian Airlines Inc.
-- JetBlue Airways
-- Mesa Airlines Inc.
-- SkyWest Airlines Inc.
-- Southwest Airlines Co.
-- United Air Lines Inc.
-- US Airways Inc.
-- Virgin America
+# Task 03
 
-## Task 07: MOST COMMON CARRRIER IN JUNE
+- **Question:** How would you describe the distribution of price?
+    - Positively Skewed
+    - Negatively Skewed
+    - Normally Distributed
+- **Answer:**
 
-How many flights did Envoy Air have in June?
-
-- This is still based on our code/variable from Task 05. I told you that thing was important. :-)
-
-```{r task_07}
+```{r}
 ## YOUR CODE HERE!
 
 ```
 
-Once you have completed the code, record your answer in Canvas.
+There are different ways to calculate skewness. We will use the alternative Pearson Mode skewness calculation.
 
+`Skew = 3 * (Mean – Median) / Standard Deviation`
 
-## Task 08: MOST COMMON DESTINATION
+Can you calculate the skew of price . . .  without just typing the numbers into the R console?
 
-- In `flights`, there is a column called `dest`. There is also a column called `origin`. Both are foreign keys for the `airports` table. The primary key in `airports` is faa.
-- Look at `flights$dest` to see that the entries look like what you see in `airports$faa`.
-- This is a type of inner join you haven't done before. Although the columns we are using to join the tables have different names, the logic is the same.
-- Below, I have shown you how to structure this inner join. To complete this task you need to replace the `?` with column names. 
-- Have you noticed that columns in join statements have to be in quotations? The reasons for this are complicated, but it is a common mistake/gotcha that trips people up so I'm warning you about it here, again.
-- What is the name of the most common destination in our data?
-
-```{r task_08}
-## YOUR CODE HERE!
-## And, no, the code provided below does not work and there is no foo or bar functions.
-
-flights %>%
-    inner_join(airports, by = c("?" = "?")) %>%
-    group_by(?) %>%
-    foo() %>%
-    bar()
+```{r}
+## Your Code Here!
+diamonds %>%
+    summarize(
+        mean_price = mean(price),
+        sd_price = sd(price),
+        median_price = median(price),
+        ## Tip: You can use previously defined values such as mean_price!
+        skew_price = "?"
+    )
 ```
 
-Once you have completed the code, record your answer in Canvas.
+An easy hack to remember positive/negative skew.
 
+- If the mean is LARGER than the median it is positively skewed.
+- If the mean is SMALLER than the median it is negatively skewed.
 
+# Task 04
 
-## Task 09: MOST COMMON DESTINATION (EASTERN TIME ZONE)
+- **Question:** Look at the distribution of price by cut. 
+    - Which cut has the highest average cost?
+    - Look at the density plot of each cut. Which cut is most clearly not bimodal?
+- **Answer:**
 
-- Use the code you developed for Task 08 to complete this task (or create a variable to make your life easier).
-- What is the most common destination in the eastern time zone?
-    - `tzone == "America/New_York"`
-- Applying the filter BEFORE the `inner_join` function does not work. Why?
-
-
-```{r task_09}
+```{r}
 ## YOUR CODE HERE!
 
 ```
 
-Once you have completed the code, record your answer in Canvas.
+# Task 05
+
+- **Question:** Fair cut diamonds have the second highest average price. Why?
+- **Answer:**
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+Look at the interaction between these two continuous variables.
+
+- This is a very realistic example.
+- Averages can be misleading/confusing.
+- It's the distribution that matters!!!
+
+# Task 06
+
+- **Question:** How would you describe the distribution of carat?
+    - Unimodal
+    - Bimodal
+    - Trimodal
+    - Multimodal
+- **Answer:**
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+# Task 07
+
+- **Question:** Using geom_tile, look at the relationship between color and cut.
+    - What is the most common color of an Ideal cut diamond?
+    - How does this compare to Fair cut diamonds?
+- **Answer:**
+
+```{r}
+## We haven't used geom_tile in class, so I'm going to just give this to you.
+diamonds %>%
+    count(color, cut) %>%
+    ggplot(mapping = aes(x = color, y = cut)) +
+    geom_tile(mapping = aes(fill = n))
+```
+
+OK, great. As as cool as they look, I think they hide quite a lot. Can you alter this plot into a bar plot (geom_col) and compare the color distribution of each diamond cut?
+
+Specifically, I want you to be able to discuss the pattern you see in a Fair cut diamond as compared to an Ideal cut diamond. Adapt the code above and see what you can come up with.
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+
+# Task 08
+
+- **Question:** Plot the relationship between carat (x) and price (y).
+    - You and I both know higher carat diamonds are worth more, so I won't ask you to tell me that the relationship between carat and price is positive.
+    - But is it a linear relationship?
+    - Use your plot to support your argument.
+- **Answer:**
+
+Helpful Hints:
+
+- Setting alpha to .1 or .05 may help you peer into the data more easily.
+- You would set this in the geom_point function.
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+So, that's a little weird. There's something going on there. Take a look at cut, color, and clarity. Based on your plots, which of these three categorical variables appears to best "drive" the relationship between color and price?
+
+To answer this, plot the above relationship, stratified by each of the categorical variables. Which plot is the most interesting and seems to best explain what you see going on in the over-all data?
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+# Task 09
+
+- **Question:** Let's build a linear regression!
+- **Answer:**
+
+```{r}
+knitr::include_graphics("https://wikimedia.org/api/rest_v1/media/math/render/svg/8119b3ed1259aa8ff15166488548104b50a0f92e")
+```
+
+Helpful Hints:
+
+- The book tends to draw a sharp line between EDA and modeling.
+- I do not take such a hard line. In part because I see them as interrelated.
+- This is also the moment where I hope facet_wrap suddenly makes more sense.
+
+```{r}
+# This is fancy-speak for price as a function of carat.
+model_1 <- lm(price ~ carat, data = diamonds)
+## Note: This is NOT summarize!
+summary(model_1)
+```
+
+- Let's talk, briefly, about our output.
+
+This will assign the value of our predicted (modeled) price and the residuals back to our diamonds data. This way, we can look for patterns in the model.
+
+Now we are doing EDA on our own model!
+
+```{r}
+diamonds <-
+    diamonds %>%
+    mutate(
+        predicted_1 = model_1$fitted.values,
+        residuals_1 = model_1$residuals
+    )
+diamonds
+```
+
+
+We want our average residual to be close to 0. And the narrower it is, the better.
+
+```{r}
+ggplot(diamonds, aes(residuals_1)) +
+    geom_density()
+```
+
+- Our model has one limitation in that it predicts some diamonds as having a negative price.
+- If that were only true. . . . 
+- How many predicated values are less than zero? 
+- As a percent it is relatively small.
+- And, we know right off the bat that any predicted value less than 0 is wrong.
+- So, anything we can do to reduce that number means our model is better.
+
+```{r}
+## YOUR CODE HERE!
+
+```
+
+
+Does the model work equally well for the different cuts of diamonds?
+
+```{r}
+ggplot(diamonds, aes(residuals_1)) +
+    geom_density() +
+    facet_wrap(~cut)
+```
+
+The challenge is that our model underestimates the price of quite a few diamonds.
+
+```{r}
+ggplot(diamonds, aes(x = price, y = predicted_1, color = cut)) +
+    geom_point(alpha = .1)
+```
+
+# Task 10
+
+- **Question:** Let's build a BETTER model. Based on r-squared, which is the best second feature to add, cut, color, or clarity? Can you build a model, using these features, which reduces the number of predicted values under 0?
+- **Answer:**
+
+Helpful Hint:
+
+- Type `?lm` in the console, to read the documentation for the lm function.
+
+```{r}
+## This shows you HOW to build a model that has two features.
+## I'll leave it to you to figure out which is best.
+model_2 <- lm(price ~ carat + cut, data = diamonds)
+summary(model_2)
+```
+
+- This model has a slightly better r-squared.
+- But has it reduce the number of dumb values?
+- First, let's get our data back.
+
+```{r}
+diamonds <-
+    diamonds %>%
+    mutate(
+        predicted_2 = model_2$fitted.values,
+        residuals_2 = model_2$residuals
+    )
+diamonds
+```
 
 
 
+```{r}
+diamonds %>%
+    filter(predicted_2 < 0) %>%
+    count()
+```
 
+- No! It went up! Not down.
 
-# THANKS
-
-That completes this week's lab. I hope this was helpful.
+We will start with this next week.

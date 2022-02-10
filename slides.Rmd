@@ -1,0 +1,139 @@
+---
+title: "Privacy Rules and EDW"
+author: "Andy Choens"
+output:
+    ioslides_presentation:
+        widescreen: TRUE
+        smaller: TRUE
+---
+
+## Hans Rosling
+
+This didn't work last week.
+
+- [Hans Rosling's 200 Countries, 200 Years, 4 Minutes - The Joy of Stats - BBC Four](https://www.youtube.com/watch?v=jbkSRLYSojo)
+- We won't watch this, but it rocks. [The best stats you've ever seen | Hans Rosling](https://www.youtube.com/watch?v=hVimVzgtD6w)
+
+# How many data privacy laws can we name? (And what do they do?)
+
+## Data v Privacy
+
+- For all the grandiose talk of the _promise_ of data, it comes at a cost: privacy.
+- Have you ever stopped to think about _how_: 
+    - Google affords to give you a free GMail account?
+    - Twitter makes money while offering ass-hats the world over a free soap box?
+    - Facebook is really using your data?
+
+## The Big Picture
+
+- The US has no single nationwide privacy law.
+- Instead, we have a patchwork of state and national laws.
+- In most states, including NYS, there is no law regulating:
+    - who, where, when, what, or how your data can be sold on the open market?
+    - must a company tell you when there is a data breach or if so, how quickly?
+- California, Colorado, and Virginia have state-specific laws on the books.
+
+## US Privacy Laws
+
+- Health Insurance Portability and Accountability Act (HIPAA)
+- Family Educational Rights and Privacy Act (FERPA)
+- Fair Credit Reporting Act (FCRA)
+- Gramm-Leach-Bliley Act (GLBA)
+- Electronic Communications Privacy Act (ECPA)
+- Children's Online Privacy Protection Rule (COPPA)
+- Video Privacy Protection Act (VPPA)
+- Federal Trade Commission Act (FTC Act)
+
+## HIPAA
+
+- [Health Insurance Portability and Accountability Act (HIPAA)](https://www.cdc.gov/phlp/publications/topic/hipaa.html)
+- NOT HIPA or HIPPA, sorry
+- Only applies to covered entities.
+- Is not actually about your privacy.
+    - In my day-job, I am a covered entity.
+    - As your professor, I am not.
+    - Thought experiment: A student discloses something healthcare related and private.
+        - If I blab about it all over Twitter, I am acting immorally.
+        - I will probably get fired.
+        - But I am not violating HIPAA.
+- Portability of healthcare date is an important and often overlooked facet of HIPAA.
+- There are exceptions.
+- It is legal for your doctor and health insurance to share your healthcare data with third parties for business purposes. They just can't sell it.
+    - No, they do not need to inform you.
+    - No, you can't opt out.
+
+## FERPA
+
+- [Family Educational Rights and Privacy Act (FERPA)]()
+- Relevant to all of you, since you are all students.
+- Focus: Makes student records private and empowers students/parents.
+- Only applies to schools which receive Department of Education Funding.
+- Like HIPAA, gives you the right to see your records.
+    - However, they need not be portable.
+- You can request the school change records you believe are inaccurate.
+    - There is the right to a formal hearing.
+- There are exceptions.
+
+## Others (1/2)
+
+- **Fair Credit Reporting Act (FCRA):** Limits who is allowed to see a credit report, what the credit bureaus can collect, and how information is obtained.
+- **Gramm-Leach-Bliley Act (GLBA):** Requires consumer financial products, such as loan services or investment-advice services, to explain how they share data, as well as the customer's right to opt out.
+    - No restrictions on how companies use the data they collect, as long as they disclose such usage beforehand.
+    - Attempts to put guardrails on the security of some personal data.
+- **Electronic Communications Privacy Act (ECPA):** Limits government wiretaps on telephone calls and other electronic signals (though the USA Patriot Act redefined much of this).
+    -Sets broad rules concerning how employers can monitor employee communications.
+    - Passed in 1986 & is outdated.
+    - Does not protect against modern surveillance tactics such as law enforcement access of older data stored on servers, in cloud storage documents, and in search queries.
+
+## Others (2/2)
+
+- **Children's Online Privacy Protection Rule (COPPA):** Limits data collection for children under 13 years old.
+- **Video Privacy Protection Act (VPPA):** Prevents the disclosure of VHS rental records, but has never been held against streaming companies.
+    - A journalist accessed supreme court nominee's Robert Bork's VHS history.
+- **Federal Trade Commission Act (FTC Act):** Enables the FTC to prosecute an app/website which violates its own privacy policy.
+    - This can include marketing language related to privacy.
+    - Example: When Zoom for deceived users by claiming video chats were end-to-end encrypted.
+
+## State Privacy Laws
+
+- California (CCPA and its amendment, CPRA)
+- Virginia (VCDPA)
+- Colorado (ColoPA)
+- These laws apply only to people who live in these states.
+- They are broadly similar.
+    - Require companies to tell you if they will sell your data.
+    - Give you some option (usually weak) to opt in/out (mostly out).
+    - Rights to access, delete, move, correct your data.
+
+[US State Privacy Legislation Tracker](https://iapp.org/resources/article/us-state-privacy-legislation-tracker/)
+
+## EU Privacy Laws
+
+- General Data Protection Regulation (GDPR)
+- Requires companies to ask for some permissions to share data and gives individuals rights to access, delete, or control the use of that data.
+- Yet, with all that Facebook, Twitter, etc. continue to operate in Europe.
+
+## Other Considerations
+
+Countries such as China have, in recent years, increasingly required companies operating in their country to maintain "local" offices and data centers. This gives local authorities more control of their citizens' data.
+
+## Questions
+
+- Should the US have a single comprehensive data privacy law?
+- What should it look like/cover?
+- What should the boundaries of data sharing be?
+- What is the moral/ethical framework to base such laws on?
+
+## Consequences
+
+And the consequences of data can be huge.
+
+[How a Fitness App's Heat Map Uncovers Military Bases | NYT](https://www.youtube.com/watch?v=0IB8p-YpXwA)
+
+## Sources
+
+- [The State of Consumer Data Privacy Laws in the US (And Why It Matters)](https://www.nytimes.com/wirecutter/blog/state-of-privacy-laws-in-us/)
+    - Part of the NYT's Wirecutter series.
+    - September 6, 2021
+
+# Lab/EDA
