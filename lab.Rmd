@@ -1,51 +1,65 @@
 ---
-title: "Diamonds are forever"
+title: "How much for that insurance?"
 output: html_notebook
 ---
 
 # Setup
 
+- Import the "insurance.csv" file in the "data" folder.
+
 ```{r setup, include=FALSE}
-library(tidyverse)
-diamonds <- read_csv("data/diamonds.csv")
+library(rio, tidyr, tidyverse)
+insurance <- ???
 ```
 
 # Data
 
+A data frame with 1,338 rows and 7 variables which we will use to model health insurance cost next week. This week we will explore the data to better understand it.
 ```{r}
-diamonds
+insurance
 ```
 
 ## Columns
 
-A data frame with 53940 rows and 10 variables:
+- age: age of primary beneficiary
+- sex: insurance contractor gender, female, male
+- bmi: Body mass index, providing an understanding of body, weights that are relatively high or low relative to height,
+objective index of body weight (kg / m ^ 2) using the ratio of height to weight, ideally 18.5 to 24.9
+- children: Number of children covered by health insurance / Number of dependents
+- smoker: Smoking
+- region: the beneficiary's residential area in the US, northeast, southeast, southwest, northwest.
+- charges: Individual medical costs billed by health insurance
 
-- carat: weight of the diamond (0.2–5.01)
-- cut: quality of the cut (Fair, Good, Very Good, Premium, Ideal)
-- color: diamond colour, from D (best) to J (worst)
-- clarity: a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
-- depth: total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43–79)
-- table: width of top of diamond relative to widest point (43–95)
-- price: price in US dollars (\$326–\$18,823)
-- x: length in mm (0–10.74)
-- y: width in mm (0–58.9)
-- z: depth in mm (0–31.8)
+Data Source: https://www.kaggle.com/datasets/mirichoi0218/insurance
+
 
 # Task 01
 
 - **Question:** Which columns are categorical variables? Which columns are continuous variables?
 - **Answer:**
 
-```{r}
-## YOUR CODE HERE!
+Hint: This questions does not require any code. None. Nada. Just make some notes below.
 
-```
+Categorical Variables:
+
+- x
+- y
+- z
+
+Continuous Variables:
+
+- x
+- y
+- z
 
 
 
 # Task 02
 
-- **Question:** What is the most common cut of diamond and how many of these are there?
+- **Question:** Each row of data in this data set contains patient information for a single, unknown, year. Therefore, the `charges` column is not a single charge. It is the total member charges for the year.
+
+I suspect this does not include member co-pay because the term charges is used by insurance companies to identify their out of pocket costs for the member.
+
 - **Answer:**
 
 ```{r}
@@ -56,7 +70,7 @@ A data frame with 53940 rows and 10 variables:
 
 # Task 03
 
-- **Question:** How would you describe the distribution of price?
+- **Question:** Draw a density plot of charges. How would you describe the distribution of charges?
     - Positively Skewed
     - Negatively Skewed
     - Normally Distributed
@@ -71,31 +85,40 @@ There are different ways to calculate skewness. We will use the alternative Pear
 
 `Skew = 3 * (Mean – Median) / Standard Deviation`
 
-Can you calculate the skew of price . . .  without just typing the numbers into the R console?
+Can you calculate the skew of charges . . .  without just typing the numbers into the R console?
 
 ```{r}
-## Your Code Here!
-diamonds %>%
+## Hint: You can use columns you've already defined . . . . 
+insurance |>
     summarize(
-        mean_price = mean(price),
-        sd_price = sd(price),
-        median_price = median(price),
-        ## Tip: You can use previously defined values such as mean_price!
-        skew_price = "?"
+        mean_charges = mean(charges),
+        sd_charges = sd(charges),
+        median_charges = median(charges),
+        ## Tip: You can use previously defined values such as mean_charges!
+        skew_charges = "?"
     )
 ```
 
 An easy hack to remember positive/negative skew.
 
-- If the mean is LARGER than the median it is positively skewed.
-- If the mean is SMALLER than the median it is negatively skewed.
+- If the mean is LARGER than the median it is positively skewed because of the long tail to the right.
+- If the mean is SMALLER than the median it is negatively skewed because of the long tail to the left.
+
+Hint: Numeric distributions are generally positively skewed. . . . 
+
+Reusing the code above, draw a density plot of BMI and calculate the skew of BMI. In Canvas, tell me which variable, BMI or Charges is MORE skewed. Use your plots and skew calculations to support your answer.
+
+```{r}
+## YOUR CODE HERE!!!
+
+```
 
 # Task 04
 
-- **Question:** Look at the distribution of price by cut. 
-    - Which cut has the highest average cost?
-    - Look at the density plot of each cut. Which cut is most clearly not bimodal?
+- **Question:** Look at the age variable. What kinds of members are not in this data set? When we later develop a model to predict cost, what limits will this place on our model?
 - **Answer:**
+
+To do this, look at the distribution plot of age. I also recommend you look at the min, max, and average age of members.
 
 ```{r}
 ## YOUR CODE HERE!
@@ -104,27 +127,31 @@ An easy hack to remember positive/negative skew.
 
 # Task 05
 
-- **Question:** Fair cut diamonds have the second highest average price. Why?
+- **Question:** It is possible to calculate a percentage using the dplyr verbs. Use the code below to calculate the percentage of members which are female.
 - **Answer:**
 
 ```{r}
-## YOUR CODE HERE!
+## First we count the number of members who are male/female.
+## Then we un-group the data, and calculate the percent using mutate.
+insurance |>
+    group_by(sex) |>
+    count() |>
+    ungroup() |>
+    mutate(p = 100 * n / sum(n))
 
+## Another approach, using pivot.
+insurance |>
+    group_by(sex) |>
+    count() |>
+    pivot_wider(names_from = sex, values_from = n) |>
+    mutate(p_female = 100 * female / (female + male))
+
+## If all goes well, you will get the same answer . . . . 
 ```
-
-Look at the interaction between these two continuous variables.
-
-- This is a very realistic example.
-- Averages can be misleading/confusing.
-- It's the distribution that matters!!!
 
 # Task 06
 
-- **Question:** How would you describe the distribution of carat?
-    - Unimodal
-    - Bimodal
-    - Trimodal
-    - Multimodal
+- **Question:** Which region has the highest average charges? Which region has the highest average BMI?
 - **Answer:**
 
 ```{r}
@@ -134,168 +161,33 @@ Look at the interaction between these two continuous variables.
 
 # Task 07
 
-- **Question:** Using geom_tile, look at the relationship between color and cut.
-    - What is the most common color of an Ideal cut diamond?
-    - How does this compare to Fair cut diamonds?
+- **Question:** Draw a scatter plot showing charges as a function of BMI.
 - **Answer:**
 
-```{r}
-## We haven't used geom_tile in class, so I'm going to just give this to you.
-diamonds %>%
-    count(color, cut) %>%
-    ggplot(mapping = aes(x = color, y = cut)) +
-    geom_tile(mapping = aes(fill = n))
-```
-
-OK, great. As as cool as they look, I think they hide quite a lot. Can you alter this plot into a bar plot (geom_col) and compare the color distribution of each diamond cut?
-
-Specifically, I want you to be able to discuss the pattern you see in a Fair cut diamond as compared to an Ideal cut diamond. Adapt the code above and see what you can come up with.
+This means you plot charges as the dependent variable (y-axis) and BMI as the independent variable (x-axis).
 
 ```{r}
 ## YOUR CODE HERE!
 
 ```
+
 
 
 # Task 08
 
-- **Question:** Plot the relationship between carat (x) and price (y).
-    - You and I both know higher carat diamonds are worth more, so I won't ask you to tell me that the relationship between carat and price is positive.
-    - But is it a linear relationship?
-    - Use your plot to support your argument.
-- **Answer:**
+- **Question:** It is complicated, but there is a correlation between BMI and insurance charges. In fact, there appear to be at least two groups in this plot. Which categorical variable best explains the apparent existence of these groups?
+- **Answer:** Your answer should be sex, smoker, or region.
 
-Helpful Hints:
+In other words, which categorical variables group together best to tell a story? Take your plot from above, and use the `color` parameter of the `aes()` function. Look at all the categorical variables and choose the plot that tells the most compelling story about our data. Which variable best "explains" our groupings?
 
-- Setting alpha to .1 or .05 may help you peer into the data more easily.
-- You would set this in the geom_point function.
 
-```{r}
-## YOUR CODE HERE!
-
-```
-
-So, that's a little weird. There's something going on there. Take a look at cut, color, and clarity. Based on your plots, which of these three categorical variables appears to best "drive" the relationship between color and price?
-
-To answer this, plot the above relationship, stratified by each of the categorical variables. Which plot is the most interesting and seems to best explain what you see going on in the over-all data?
-
-```{r}
-## YOUR CODE HERE!
-
-```
 
 # Task 09
 
-- **Question:** Let's build a linear regression!
-- **Answer:**
+- **Question:** Create a new scatter plot. This time, plot charges as a function of age. And you should see THREE groups. Which categorical variable best explains these three groups?
+- **Answer:** Your answer should be sex, smoker, or region.
 
 ```{r}
-knitr::include_graphics("https://wikimedia.org/api/rest_v1/media/math/render/svg/8119b3ed1259aa8ff15166488548104b50a0f92e")
-```
-
-Helpful Hints:
-
-- The book tends to draw a sharp line between EDA and modeling.
-- I do not take such a hard line. In part because I see them as interrelated.
-- This is also the moment where I hope facet_wrap suddenly makes more sense.
-
-```{r}
-# This is fancy-speak for price as a function of carat.
-model_1 <- lm(price ~ carat, data = diamonds)
-## Note: This is NOT summarize!
-summary(model_1)
-```
-
-- Let's talk, briefly, about our output.
-
-This will assign the value of our predicted (modeled) price and the residuals back to our diamonds data. This way, we can look for patterns in the model.
-
-Now we are doing EDA on our own model!
-
-```{r}
-diamonds <-
-    diamonds %>%
-    mutate(
-        predicted_1 = model_1$fitted.values,
-        residuals_1 = model_1$residuals
-    )
-diamonds
-```
-
-
-We want our average residual to be close to 0. And the narrower it is, the better.
-
-```{r}
-ggplot(diamonds, aes(residuals_1)) +
-    geom_density()
-```
-
-- Our model has one limitation in that it predicts some diamonds as having a negative price.
-- If that were only true. . . . 
-- How many predicated values are less than zero? 
-- As a percent it is relatively small.
-- And, we know right off the bat that any predicted value less than 0 is wrong.
-- So, anything we can do to reduce that number means our model is better.
-
-```{r}
-## YOUR CODE HERE!
+## YOUR ANSWER HERE!
 
 ```
-
-
-Does the model work equally well for the different cuts of diamonds?
-
-```{r}
-ggplot(diamonds, aes(residuals_1)) +
-    geom_density() +
-    facet_wrap(~cut)
-```
-
-The challenge is that our model underestimates the price of quite a few diamonds.
-
-```{r}
-ggplot(diamonds, aes(x = price, y = predicted_1, color = cut)) +
-    geom_point(alpha = .1)
-```
-
-# Task 10
-
-- **Question:** Let's build a BETTER model. Based on r-squared, which is the best second feature to add, cut, color, or clarity? Can you build a model, using these features, which reduces the number of predicted values under 0?
-- **Answer:**
-
-Helpful Hint:
-
-- Type `?lm` in the console, to read the documentation for the lm function.
-
-```{r}
-## This shows you HOW to build a model that has two features.
-## I'll leave it to you to figure out which is best.
-model_2 <- lm(price ~ carat + cut, data = diamonds)
-summary(model_2)
-```
-
-- This model has a slightly better r-squared.
-- But has it reduce the number of dumb values?
-- First, let's get our data back.
-
-```{r}
-diamonds <-
-    diamonds %>%
-    mutate(
-        predicted_2 = model_2$fitted.values,
-        residuals_2 = model_2$residuals
-    )
-diamonds
-```
-
-
-
-```{r}
-diamonds %>%
-    filter(predicted_2 < 0) %>%
-    count()
-```
-
-- No! It went up! Not down.
-
-We will start with this next week.

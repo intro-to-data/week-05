@@ -1,5 +1,5 @@
 ---
-title: "Privacy Rules and EDW"
+title: "Data Privacy Laws"
 author: "Andy Choens"
 output:
     ioslides_presentation:
@@ -7,31 +7,29 @@ output:
         smaller: TRUE
 ---
 
-## Hans Rosling
 
-This didn't work last week.
 
-- [Hans Rosling's 200 Countries, 200 Years, 4 Minutes - The Joy of Stats - BBC Four](https://www.youtube.com/watch?v=jbkSRLYSojo)
-- We won't watch this, but it rocks. [The best stats you've ever seen | Hans Rosling](https://www.youtube.com/watch?v=hVimVzgtD6w)
+# How many data privacy laws can you name?
 
-# How many data privacy laws can we name? (And what do they do?)
+## Data, Privacy, and "Free" Services
 
-## Data v Privacy
-
-- For all the grandiose talk of the _promise_ of data, it comes at a cost: privacy.
 - Have you ever stopped to think about _how_: 
     - Google affords to give you a free GMail account?
     - Twitter makes money while offering ass-hats the world over a free soap box?
     - Facebook is really using your data?
+- None of these services are truly free.
+
+# Where would YOU place the boundary between data and privacy?
 
 ## The Big Picture
 
 - The US has no single nationwide privacy law.
 - Instead, we have a patchwork of state and national laws.
-- In most states, including NYS, there is no law regulating:
-    - who, where, when, what, or how your data can be sold on the open market?
-    - must a company tell you when there is a data breach or if so, how quickly?
-- California, Colorado, and Virginia have state-specific laws on the books.
+- In most states, including NYS, there is no law regulating how private companies may use your data.
+- Of course, if a company violates their own terms and conditions, you can sue them.
+    - This is a civil, not legal remedy.
+    - And if they told you they were going to sell your data . . . . 
+    - And they can afford more lawyers than you can!
 
 ## US Privacy Laws
 
@@ -44,27 +42,28 @@ This didn't work last week.
 - Video Privacy Protection Act (VPPA)
 - Federal Trade Commission Act (FTC Act)
 
-## HIPAA
+## HIPAA (1)
 
-- [Health Insurance Portability and Accountability Act (HIPAA)](https://www.cdc.gov/phlp/publications/topic/hipaa.html)
-- NOT HIPA or HIPPA, sorry
+- Health Insurance Portability and Accountability Act (HIPAA)
+    - One P, Two A's!!!
+- Privacy Rule establishes national standards to protect individuals' medical records and other individually identifiable health information (collectively defined as “protected health information”) and applies to health plans, health care clearinghouses, and those health care providers that conduct certain health care transactions electronically.
+    - It is legal for covered entities to share your health care data with third parties for business purposes. 
+    - They cannot sell your data.
 - Only applies to covered entities.
-- Is not actually about your privacy.
-    - In my day-job, I am a covered entity.
-    - As your professor, I am not.
-    - Thought experiment: A student discloses something healthcare related and private.
-        - If I blab about it all over Twitter, I am acting immorally.
-        - I will probably get fired.
-        - But I am not violating HIPAA.
-- Portability of healthcare date is an important and often overlooked facet of HIPAA.
-- There are exceptions.
-- It is legal for your doctor and health insurance to share your healthcare data with third parties for business purposes. They just can't sell it.
-    - No, they do not need to inform you.
-    - No, you can't opt out.
+    - Your doctor and any contractors hired by them who work with data ARE covered entities.
+- Two relevant examples
+
+## HIPAA (2)
+
+- Portability of health care data is an important and often overlooked facet of HIPAA.
+- You can instruct a covered entity to share your records with a third party.
+    - Urgent Care Example
+- HIPAA empowers you to have access to your own records.
+
 
 ## FERPA
 
-- [Family Educational Rights and Privacy Act (FERPA)]()
+- Family Educational Rights and Privacy Act (FERPA)
 - Relevant to all of you, since you are all students.
 - Focus: Makes student records private and empowers students/parents.
 - Only applies to schools which receive Department of Education Funding.
@@ -92,7 +91,7 @@ This didn't work last week.
     - A journalist accessed supreme court nominee's Robert Bork's VHS history.
 - **Federal Trade Commission Act (FTC Act):** Enables the FTC to prosecute an app/website which violates its own privacy policy.
     - This can include marketing language related to privacy.
-    - Example: When Zoom for deceived users by claiming video chats were end-to-end encrypted.
+    - Example: When Zoom deceived users by claiming video chats were end-to-end encrypted.
 
 ## State Privacy Laws
 
@@ -100,22 +99,26 @@ This didn't work last week.
 - Virginia (VCDPA)
 - Colorado (ColoPA)
 - These laws apply only to people who live in these states.
+- Because they are all different, they make it very challenging for companies operating in multiple states.
 - They are broadly similar.
     - Require companies to tell you if they will sell your data.
     - Give you some option (usually weak) to opt in/out (mostly out).
     - Rights to access, delete, move, correct your data.
+- New York State Privacy Act (2021, 2022)
+- US State Privacy Legislation Tracker
 
-[US State Privacy Legislation Tracker](https://iapp.org/resources/article/us-state-privacy-legislation-tracker/)
+Links are in Canvas!!!
 
 ## EU Privacy Laws
 
 - General Data Protection Regulation (GDPR)
 - Requires companies to ask for some permissions to share data and gives individuals rights to access, delete, or control the use of that data.
-- Yet, with all that Facebook, Twitter, etc. continue to operate in Europe.
 
 ## Other Considerations
 
-Countries such as China have, in recent years, increasingly required companies operating in their country to maintain "local" offices and data centers. This gives local authorities more control of their citizens' data.
+- The EU and China require companies operating in their country to maintain "local" offices and data centers.
+    - The EU requires this because EU laws require MORE privacy than other regions.
+    - China requires this to give the CCP more control of their citizens' data.
 
 ## Questions
 
@@ -126,14 +129,11 @@ Countries such as China have, in recent years, increasingly required companies o
 
 ## Consequences
 
-And the consequences of data can be huge.
-
-[How a Fitness App's Heat Map Uncovers Military Bases | NYT](https://www.youtube.com/watch?v=0IB8p-YpXwA)
+- The consequences of data can be huge.
+- Watch the next video. Let me know what you think.
 
 ## Sources
 
 - [The State of Consumer Data Privacy Laws in the US (And Why It Matters)](https://www.nytimes.com/wirecutter/blog/state-of-privacy-laws-in-us/)
     - Part of the NYT's Wirecutter series.
     - September 6, 2021
-
-# Lab/EDA
