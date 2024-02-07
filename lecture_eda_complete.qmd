@@ -1,0 +1,442 @@
+---
+title: "Police Shootings EDA"
+format: html
+editor: visual
+---
+
+```{r setup}
+#| include: false
+pacman::p_load(rio, tidyverse)
+police_shootings <- read_csv("data/police_shootings.csv")
+```
+
+# Goal
+
+-   Exploratory Data Analysis of Police Shootings.
+
+# Data
+
+```{r}
+police_shootings
+```
+
+-   Grain: Police shooting events
+
+Nulls (Bar Plot, Time Series)
+
+```{r}
+police_shootings |>
+  mutate_all(is.na) |>
+  summarise_all(sum) |>
+  pivot_longer(cols = names(police_shootings)) |>
+  mutate(p = round(100*value/9345, 1))
+```
+
+# Victim Demographics
+
+## Age (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Plot/Graph
+police_shootings |>
+  ggplot(aes(y = age)) +
+  geom_histogram(binwidth = 10, fill = "darkblue") +
+  ylim(90, 0)
+```
+
+## Gender (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_gender <-
+  police_shootings |>
+  filter(!is.na(gender)) |>
+  count(gender) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_gender <-
+  police_shootings |>
+  filter(!is.na(gender)) |>
+  group_by(year, gender) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_gender
+ps_year_gender
+```
+
+```{r}
+# Plot/Graph
+ps_gender |>
+  ggplot(aes(x = gender, y = p)) +
+  geom_col()
+
+ps_year_gender |>
+  ggplot(aes(x = year, y = p, color = gender)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_gender$year)
+  )
+```
+
+## Race
+
+-   Discussion
+
+```{r}
+# Table
+ps_race <-
+  police_shootings |>
+  mutate(race = if_else(is.na(race), "Unknown", race)) |>
+  filter(!str_detect(race, ";")) |>
+  count(race) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_race <-
+  police_shootings |>
+  filter(!is.na(race), !str_detect(race, ";")) |>
+  group_by(year, race) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_race
+ps_year_race
+```
+
+```{r}
+# Plot/Graph
+ps_race |>
+  ggplot(aes(x = race, y = p)) +
+  geom_col()
+
+ps_year_race |>
+  ggplot(aes(x = year, y = p, color = race)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_race$year)
+  )
+```
+
+## Race Source (Bar Plot, Time Series)
+
+```{r}
+# Table
+ps_race_source <-
+  police_shootings |>
+  filter(!is.na(race_source)) |>
+  count(race_source) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_race_source <-
+  police_shootings |>
+  filter(!is.na(race_source)) |>
+  group_by(year, race_source) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_race_source
+ps_year_race_source
+```
+
+```{r}
+# Plot/Graph
+ps_race_source |>
+  ggplot(aes(x = race_source, y = p)) +
+  geom_col()
+
+ps_year_race_source |>
+  ggplot(aes(x = year, y = p, color = race_source)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_race_source$year)
+  )
+```
+
+## Was Mental Illness Related (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_was_mental_illness_related <-
+  police_shootings |>
+  filter(!is.na(was_mental_illness_related)) |>
+  count(was_mental_illness_related) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_was_mental_illness_related <-
+  police_shootings |>
+  filter(!is.na(was_mental_illness_related)) |>
+  group_by(year, was_mental_illness_related) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_was_mental_illness_related
+ps_year_was_mental_illness_related
+```
+
+```{r}
+# Plot/Graph
+ps_was_mental_illness_related |>
+  ggplot(aes(x = was_mental_illness_related, y = p)) +
+  geom_col()
+
+ps_year_was_mental_illness_related |>
+  ggplot(aes(x = year, y = p, color = was_mental_illness_related)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_was_mental_illness_related$year)
+  )
+```
+
+# Event Specifics
+
+## Threat Type (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_threat_type <-
+  police_shootings |>
+  filter(!is.na(threat_type)) |>
+  count(threat_type) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_threat_type <-
+  police_shootings |>
+  filter(!is.na(threat_type)) |>
+  group_by(year, threat_type) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_threat_type
+ps_year_threat_type
+```
+
+```{r}
+# Plot/Graph
+ps_threat_type |>
+  ggplot(aes(x = threat_type, y = p)) +
+  geom_col()
+
+ps_year_threat_type |>
+  ggplot(aes(x = year, y = p, color = threat_type)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_threat_type$year)
+  )
+```
+
+## Flee Status (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_flee_status <-
+  police_shootings |>
+  filter(!is.na(flee_status)) |>
+  count(flee_status) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_flee_status <-
+  police_shootings |>
+  filter(!is.na(flee_status)) |>
+  group_by(year, flee_status) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_flee_status
+ps_year_flee_status
+```
+
+```{r}
+# Plot/Graph
+ps_flee_status |>
+  ggplot(aes(x = flee_status, y = p)) +
+  geom_col()
+
+ps_year_flee_status |>
+  ggplot(aes(x = year, y = p, color = flee_status)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_flee_status$year)
+  )
+```
+
+## Armed With (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_armed_with <-
+  police_shootings |>
+  filter(!is.na(armed_with)) |>
+  count(armed_with) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_armed_with <-
+  police_shootings |>
+  filter(!is.na(armed_with)) |>
+  group_by(year, armed_with) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_armed_with
+ps_year_armed_with
+```
+
+```{r}
+# Plot/Graph
+ps_armed_with |>
+  ggplot(aes(x = armed_with, y = p)) +
+  geom_col()
+
+ps_year_armed_with |>
+  ggplot(aes(x = year, y = p, color = armed_with)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_armed_with$year)
+  )
+```
+
+## Location Precision (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Together
+ps_state <-
+  police_shootings |> 
+  count(state) |>
+  mutate(p = round(100*n/sum(n),2)) |>
+  arrange(desc(p))
+ps_state
+```
+
+```{r}
+pacman::p_load(janitor, sf)
+shapefile <-
+  read_sf("data/tl_2022_us_state.shp") |>
+  clean_names()
+
+shapefile |>
+  filter(region %in% 1:4, !name %in% c("Alaska", "Hawaii")) |>
+  inner_join(ps_state, by = c("stusps" = "state")) |>
+  ggplot() +
+  geom_sf(aes(fill = n, geometry = geometry))
+```
+
+## Body Camera (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_body_camera <-
+  police_shootings |>
+  filter(!is.na(body_camera)) |>
+  count(body_camera) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_body_camera <-
+  police_shootings |>
+  filter(!is.na(body_camera)) |>
+  group_by(year, body_camera) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_body_camera
+ps_year_body_camera
+```
+
+```{r}
+# Plot/Graph
+ps_body_camera |>
+  ggplot(aes(x = body_camera, y = p)) +
+  geom_col()
+
+ps_year_body_camera |>
+  ggplot(aes(x = year, y = p, color = body_camera)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_body_camera$year)
+  )
+```
+
+# Big Questions
+
+## Does the total number of police shootings increase every year?
+
+-   Discussion
+
+```{r}
+
+```
+
+## Which demographic groups are most impacted?
+
+-   Discussion
+
+```{r}
+
+```
+
+## Surprise
+
+Other than the sheer number of police shootings, what pattern did you see in this data which most surprised you or caused you to ask additional questions?
+
+For example, was there a change in any of the trend lines which surprised you, or a demographic or event group which seemed larger or smaller than you expected?
+
+Use one or more tables/plots to support your answer.
+
+-   Discussion
+
+```{r}
+
+```
+
+
+# Heat Maps
+
+## Race x Body Camera
+
+```{r}
+police_shootings |>
+  count(race, body_camera) |>
+  group_by(race) |>
+  mutate(p = 100*n/sum(n)) |>
+  filter(race !="Multiracial") |>
+  ggplot(aes(x = body_camera, y = race, fill = p)) +
+  geom_tile()
+```
+
+
+
+## Race x Flee Status
+
+```{r}
+
+```

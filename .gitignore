@@ -4,3 +4,13 @@
 .Rhistory
 .RData
 .Ruserdata
+lecture*files/*
+
+# Mapping stuff
+data/*.cpg
+data/*.dbf
+data/*.prj
+data/*.shp
+data/*.shx
+data/*.xml
+data/*.zip

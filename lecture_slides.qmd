@@ -1,0 +1,233 @@
+---
+title: "Exploratory Data Analysis"
+author: "Andy Choens"
+format:
+  revealjs:
+    theme: dark
+---
+
+
+
+# Goals
+
+- Use what we have learned to perform a real Exploratory Data Analysis (EDA).
+- Dig into the structure we are using every week.
+- Discuss limitations and biases in the data we have.
+
+
+
+## Why Exploratory Data Analysis?
+
+1. Better understand our data.
+2. Figure out what our next questions are.
+
+And our topic is . . . . 
+
+
+
+# Police Shootings
+
+::: {.notes}
+We are still going to have some fun/silly data sets. But we also need some serious data sets.
+:::
+
+
+
+## _Some_ Context: {.smaller}
+
+- August 9, 2014: Michael Brown is killed in Ferguson Missouri sparking outrage throughout the nation.
+- A 2014 Washington Post investigation of the FBI's data reports they could find less than 50% of known police shootings.
+- February 12, 2015: The FBI Director calls for better data collection of use-of-force data.
+- The Washington Post starts an independent "Police Shootings Database" in 2015.
+- January 1, 2019: Enhanced data collection of use-of-force data is launched nationwide.
+  - ***All law enforcement agencies are encouraged to participate.***
+- According to the Washington Post, only ***1 out of 3*** fatal police shootings appeared in the FBI database by 2021.
+  - They must be using Freedom on Information Act (FOIA) to calculate their numbers.
+
+
+
+## Links (in Canvas):
+
+- Washington Post:
+  - [As fatal police shootings increase, more go unreported](https://www.washingtonpost.com/investigations/interactive/2022/fatal-police-shootings-unreported/_)
+  - [Police Shootings Database](https://www.washingtonpost.com/graphics/investigations/police-shootings-database/)
+- FBI:
+  - [National Use-of-Force Data Collection](https://www.fbi.gov/how-we-can-help-you/more-fbi-services-and-information/ucr/use-of-force)
+  - [Crime Data Explorer](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/home)
+    - Is this a (not-funny) joke?
+
+::: {.notes}
+These links are in Canvas and I encourage you to look at each of them.
+
+I want to pause and look over the FBI links right now.
+:::
+
+
+
+## Why?
+
+1. Data is a ⚒️ to understand our 🌎.
+    - This topic is _(I hope)_ more engaging than talking about home sales in Texas or 🐧🐧🐧.
+3. Highlight/discuss:
+    - What we _can_ learn from the data we have.
+    - What we _cannot_ learn from the data we have.
+
+
+
+## Materials 📂 {.smaller .scrollable}
+
+- Materials:
+  - [🖺 LICENSE](LICENSE.md)
+  - [🛈 README](README.md)
+  - [🖺 lecture_slides.qmd](lecture_slides.qmd) (this document)
+  - [🖺 lecture_eda.qmd](lecture_eda.qmd) (holds all the code)
+  - [🖺 lab.qmd](lab.qmd)
+  - data 🗁:
+    - [🗐 insurance.csv](./data/insurance.csv) (lab data)
+    - [🖹 police_shootings.R](data/police_shottings.R)
+    - [🗐 police_shootings.csv](data/police_shottings.csv)
+  - includes 🗁:
+    - [🖻 Data_Science_VD.png](includes/Data_Science_VD.png)
+  - lecture_slides_files 🗁:
+    - Lots . . . . 
+
+::: {.notes}
+I think it is worth briefly exploring the setup of this week's project.
+:::
+
+
+
+# Wear: 🎩 👒 🧢 🎓{background-color="white"}
+
+![Data Science Venn Diagram](./includes/Data_Science_VD.png){.nostretch fig-align="center" width="800px"}
+
+::: {.notes}
+Why the white background on this slide you ask? Well, my graphic looks terrible on anything else.
+
+I think of each of these three regions as a hat.
+
+Sometimes I have to put on my developer hat. Sometimes I have to put on my stats hat. Sometimes I have to put on my social worker hat.
+:::
+
+
+
+## Hacking Skills
+
+- Demo:
+  - Import the data.
+  - Create a local data set.
+- Participation Required:
+  - EDA
+  - Plotting/Graphing (ggplot)
+  - Data Management/Transformation (Munge!!!)
+
+
+
+## Substantive Expertise {.smaller}
+
+- **Assumption:** Citizens in a free country should not be shot by law enforcement on a regular basis.
+- Lived Experience.
+- Many underlying causes:
+  - [Five Thirty Eight: Why Are So Many Black Americans Killed By Police?](https://fivethirtyeight.com/features/why-are-so-many-black-americans-killed-by-police/)
+
+::: {.notes}
+It is important, in research, to state your assumptions. My assumption in this is that citizens . . . . 
+
+We do _not_ bring the same lived experience to the conversation. Not even close.
+
+Yet we do each have a lived experience and that experience will shape our perspective and understanding of this discussion.
+
+We need to acknowledge that right out of the gate.
+:::
+
+
+
+## Statistics
+
+- Averages
+- Percents ％ ← <span style="color: green">_NEW!_</span>
+- Bar plots 📊
+- Time Series 📈
+- Heat Maps ← <span style="color: green">_NEW!_</span>
+- Choropleth 🗺️ ← <span style="color: green">_NEW!_</span>
+
+::: {.notes}
+- Most of what we are going to do is go _deeper_ into skills we already know.
+- But there will be a couple of new things.
+- Time Series isn't _really_ new, but the term may be new to some of you.
+:::
+
+
+
+# Next Steps
+
+- Import data from 🌐
+- EDA
+- Going further
+
+
+
+## Import Data From 🌐 {.smaller}
+
+Tasks:
+
+- Look at CSV
+- Look at JSON
+- Import/Save
+- Discuss Grain . . . . 🤗
+  - Each row is a a person/event.
+  - I would argue that event is a better description of this data than person.
+    - I'll explain why later.
+
+**GO TO CODE**
+
+::: {.notes}
+Discuss grain . . . . you know we have to have this talk . . . . 
+:::
+
+
+
+## EDA {.smaller .scrollable}
+
+- Does the total number of police shootings increase every year?
+- Which demographic groups are most impacted? From our data:
+  - Nulls (Bar Plot, Time Series)
+  - Threat Type (Bar Plot, Time Series)
+  - Flee Status (Bar Plot, Time Series)
+  - Armed With (Bar Plot, Time Series)
+  - Location Precision (Bar Plot, Time Series)
+    - ?City?
+    - ?County?
+    - ?State?
+  - Age (Bar Plot, Time Series)
+  - Gender (Bar Plot, Time Series)
+  - Race/Race Source (Bar Plot, Time Series)
+  - Was Mental Illness Related (Bar Plot, Time Series)
+  - Body Camera (Bar Plot, Time Series)
+- Does the percentage of Black Americans shot by police change over time?
+
+**GO TO CODE**
+
+
+
+## Going Further {.smaller .scrollable}
+
+- What biases may exist in this data?
+- Based on this data, what can we not know?
+- Events:
+  - We know how many _people_ died.
+  - We know each of these was during a police encounter.
+  - We do NOT know how many police encounters took place.
+- In other words:
+  - Is risk a function of certain groups having more encounters with the police?
+  - Is risk a function of each event being more dangerous for certain groups?
+  - Note: Both could be true.
+  - Because we don't have records of police encounters that _don't_ result in a fatality, we cannot explore this.
+    - 🤯 That we do not know this is, to me, mind boggling. 🤯
+- Population Demographics:
+  - We are not controlling for population demographics either.
+  - A fact which makes this data even more appalling.
+- What else would you want to ask of this data, even if it means you need more data?
+- How do you think this data should be reported?
+  - Should agencies get a participation award for reporting data or should it be mandatory?
+- Should there be federal measures?

@@ -1,0 +1,263 @@
+---
+title: "Police Shootings EDA"
+format: html
+editor: visual
+---
+
+```{r setup}
+#| include: false
+pacman::p_load(rio, tidyverse)
+police_shootings <- read_csv("data/police_shootings.csv")
+```
+
+# Goal
+
+-   Exploratory Data Analysis of Police Shootings.
+
+# Data
+
+```{r}
+police_shootings
+```
+
+-   Grain: Police shooting events
+
+Nulls (Bar Plot, Time Series)
+
+```{r}
+police_shootings |>
+  mutate_all(is.na) |>
+  summarise_all(sum) |>
+  pivot_longer(cols = names(police_shootings)) |>
+  mutate(p = round(100*value/9345, 1))
+```
+
+# Victim Demographics
+
+## Age (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Plot/Graph
+police_shootings |>
+  ggplot(aes(y = age)) +
+  geom_histogram(binwidth = 10, fill = "darkblue") +
+  ylim(90, 0)
+```
+
+## Gender (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+ps_gender <-
+  police_shootings |>
+  filter(!is.na(gender)) |>
+  count(gender) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_year_gender <-
+  police_shootings |>
+  filter(!is.na(gender)) |>
+  group_by(year, gender) |>
+  summarize(n = n()) |>
+  group_by(year) |>
+  mutate(p = round(100*n/sum(n), 2))
+
+ps_gender
+ps_year_gender
+```
+
+```{r}
+# Plot/Graph
+ps_gender |>
+  ggplot(aes(x = gender, y = p)) +
+  geom_col()
+
+ps_year_gender |>
+  ggplot(aes(x = year, y = p, color = gender)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(
+    breaks = unique(ps_year_gender$year)
+  )
+```
+
+## Race
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+## Race Source (Bar Plot, Time Series)
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+## Was Mental Illness Related (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+# Event Specifics
+
+## Threat Type (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+## Flee Status (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+## Armed With (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+## Location Precision (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Together
+ps_state <-
+  police_shootings |> 
+  count(state) |>
+  mutate(p = round(100*n/sum(n),2)) |>
+  arrange(desc(p))
+ps_state
+```
+
+```{r}
+pacman::p_load(janitor, sf)
+shapefile <-
+  read_sf("data/tl_2022_us_state.shp") |>
+  clean_names()
+
+shapefile |>
+  filter(region %in% 1:4, !name %in% c("Alaska", "Hawaii")) |>
+  inner_join(ps_state, by = c("stusps" = "state")) |>
+  ggplot() +
+  geom_sf(aes(fill = n, geometry = geometry))
+```
+
+## Body Camera (Bar Plot, Time Series)
+
+-   Discussion
+
+```{r}
+# Table
+
+```
+
+```{r}
+# Plot/Graph
+
+```
+
+# Big Questions
+
+## Does the total number of police shootings increase every year?
+
+-   Discussion
+
+```{r}
+
+```
+
+## Which demographic groups are most impacted?
+
+-   Discussion
+
+```{r}
+
+```
+
+## Surprise
+
+Other than the sheer number of police shootings, what pattern did you see in this data which most surprised you or caused you to ask additional questions?
+
+For example, was there a change in any of the trend lines which surprised you, or a demographic or event group which seemed larger or smaller than you expected?
+
+Use one or more tables/plots to support your answer.
+
+-   Discussion
+
+```{r}
+
+```
+
+# Heat Maps
+
+## Race x Body Camera
+
+```{r}
+police_shootings |>
+  count(race, body_camera) |>
+  group_by(race) |>
+  mutate(p = 100*n/sum(n)) |>
+  filter(race !="Multiracial") |>
+  ggplot(aes(x = body_camera, y = race, fill = p)) +
+  geom_tile()
+```
+
+## Race x Flee Status
+
+```{r}
+
+```
