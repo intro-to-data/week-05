@@ -7,8 +7,10 @@ output: html_notebook
 
 - Import the "insurance.csv" file in the "data" folder.
 
-```{r setup, include=FALSE}
-library(rio, tidyr, tidyverse)
+```{r setup}
+#| include: false
+
+pacman::p_load(rio, tidyr, tidyverse)
 insurance <- ???
 ```
 
