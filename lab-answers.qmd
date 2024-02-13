@@ -11,12 +11,11 @@ format: html
 #| include: false
 
 pacman::p_load(rio, tidyr, tidyverse)
-insurance <- ???
+insurance <- read_csv("data/insurance.csv")
 ```
 
 # Data
 
-A data frame with 1,338 rows and 7 variables which we will use to model health insurance cost next week. This week we will explore the data to better understand it.
 ```{r}
 insurance
 ```
@@ -32,7 +31,7 @@ objective index of body weight (kg / m ^ 2) using the ratio of height to weight,
 - region: the beneficiary's residential area in the US, northeast, southeast, southwest, northwest.
 - charges: Individual medical costs billed by health insurance
 
-Data Source: https://www.kaggle.com/datasets/mirichoi0218/insurance
+Data Source: [https://www.kaggle.com/datasets/mirichoi0218/insurance](https://www.kaggle.com/datasets/mirichoi0218/insurance)
 
 
 # Task 01
@@ -44,15 +43,17 @@ Hint: This questions does not require any code. None. Nada. Just make some notes
 
 Categorical Variables:
 
-- x
-- y
-- z
+- sex
+- smoker
+- region
+- children
 
 Continuous Variables:
 
-- x
-- y
-- z
+- age
+- bmi
+- charges
+- children
 
 
 
@@ -66,9 +67,18 @@ I suspect this does not include member co-pay because the term charges is used b
 - **Answer:**
 
 ```{r}
-## YOUR CODE HERE!
+insurance |> arrange(charges)
 
+insurance |> summarize(min_charge = min(charges))
 ```
+
+Summarize Functions:
+
+- mean
+- max
+- min
+- sd
+
 
 
 # Task 03
@@ -80,7 +90,7 @@ I suspect this does not include member co-pay because the term charges is used b
 - **Answer:**
 
 ```{r}
-## YOUR CODE HERE!
+ggplot(insurance, aes(x = charges)) + geom_density()
 
 ```
 
@@ -98,7 +108,8 @@ insurance |>
         sd_charges = sd(charges),
         median_charges = median(charges),
         ## Tip: You can use previously defined values such as mean_charges!
-        skew_charges = "?"
+        skew_charges = 3 * (mean_charges - median_charges)/sd_charges,
+        simple_example = 3 * (10-10.1)/2
     )
 ```
 
@@ -112,19 +123,31 @@ Hint: Numeric distributions are generally positively skewed. . . .
 Reusing the code above, draw a density plot of BMI and calculate the skew of BMI. In Canvas, tell me which variable, BMI or Charges is MORE skewed. Use your plots and skew calculations to support your answer.
 
 ```{r}
-## YOUR CODE HERE!!!
+ggplot(insurance, aes(x = bmi)) + geom_density()
 
+insurance |>
+    summarize(
+        mean_charges = mean(bmi),
+        sd_charges = sd(bmi),
+        median_charges = median(bmi),
+        ## Tip: You can use previously defined values such as mean_charges!
+        skew_charges = 3 * (mean_charges - median_charges)/sd_charges
+    )
 ```
 
 # Task 04
 
 - **Question:** Look at the age variable. What kinds of members are not in this data set? When we later develop a model to predict cost, what limits will this place on our model?
 - **Answer:**
+  - Cannot say anything about children.
+  - Cannot say anything about retirees.
 
 To do this, look at the distribution plot of age. I also recommend you look at the min, max, and average age of members.
 
 ```{r}
-## YOUR CODE HERE!
+ggplot(insurance, aes(x = age)) + geom_histogram()
+
+insurance |> summarize(avg_age = mean(age), max_age = max(age), min_age = min(age))
 
 ```
 
@@ -158,8 +181,10 @@ insurance |>
 - **Answer:**
 
 ```{r}
-## YOUR CODE HERE!
-
+insurance |>
+  group_by(region) |>
+  summarize(avg_charges = mean(charges)) |>
+  arrange(avg_charges)
 ```
 
 # Task 07
@@ -170,7 +195,7 @@ insurance |>
 This means you plot charges as the dependent variable (y-axis) and BMI as the independent variable (x-axis).
 
 ```{r}
-## YOUR CODE HERE!
+ggplot(insurance, aes(x = bmi, y = charges)) + geom_point()
 
 ```
 
@@ -183,7 +208,9 @@ This means you plot charges as the dependent variable (y-axis) and BMI as the in
 
 In other words, which categorical variables group together best to tell a story? Take your plot from above, and use the `color` parameter of the `aes()` function. Look at all the categorical variables and choose the plot that tells the most compelling story about our data. Which variable best "explains" our groupings?
 
-
+```{r}
+ggplot(insurance, aes(x = bmi, y = charges, color = smoker)) + geom_point()
+```
 
 # Task 09
 
@@ -191,6 +218,5 @@ In other words, which categorical variables group together best to tell a story?
 - **Answer:** Your answer should be sex, smoker, or region.
 
 ```{r}
-## YOUR ANSWER HERE!
-
+ggplot(insurance, aes(x = age, y = charges, color = smoker)) + geom_point()
 ```

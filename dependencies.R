@@ -11,4 +11,5 @@ p <- c(
 )
 install.packages(p)
 
-unlink(lecture_eda_complete.qmd)
+unlink("lecture_eda_complete.qmd")
+unlink("lab-answers.qmd")
