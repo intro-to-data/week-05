@@ -5,7 +5,7 @@ format: html
 
 # Setup
 
-- Import the "insurance.csv" file in the "data" folder.
+- Import the `insurance.csv` file in the `data` folder.
 
 ```{r setup}
 #| include: false
@@ -17,6 +17,7 @@ insurance <- ???
 # Data
 
 A data frame with 1,338 rows and 7 variables which we will use to model health insurance cost next week. This week we will explore the data to better understand it.
+
 ```{r}
 insurance
 ```
@@ -35,12 +36,15 @@ objective index of body weight (kg / m ^ 2) using the ratio of height to weight,
 Data Source: https://www.kaggle.com/datasets/mirichoi0218/insurance
 
 
-# Task 01
+
+# Tasks
+
+## Task 01
 
 - **Question:** Which columns are categorical variables? Which columns are continuous variables?
 - **Answer:**
 
-Hint: This questions does not require any code. None. Nada. Just make some notes below.
+Hint: This questions does not require any code. Just make some notes below.
 
 Categorical Variables:
 
@@ -54,32 +58,33 @@ Continuous Variables:
 - y
 - z
 
+## Task 02
 
-
-# Task 02
-
-Each row of data in this data set contains patient information for a single, unknown, year. Therefore, the `charges` column is not a single charge. It is the total member charges for the year.
-
-I suspect this does not include member co-pay because the term charges is used by insurance companies to identify their out of pocket costs for the member.
+Each row of data in this data set contains patient information for a single, unknown, year. Therefore, the `charges` column is not a single charge. It is the total member charges for the year. I suspect this does not include member co-pay because the term charges is used by insurance companies to identify their out-of-pocket expenses for the member.
 
 - **Question:** What is the smallest, or minimum, member charge in this data set?
 - **Answer:**
 
 ```{r}
+
 ## YOUR CODE HERE!
 
 ```
 
-
-# Task 03
+## Task 03
 
 - **Question:** Draw a density plot of charges. How would you describe the distribution of charges?
     - Positively Skewed
     - Negatively Skewed
     - Normally Distributed
 - **Answer:**
+- Helpful Hints:
+    - If the mean is LARGER than the median it is positively skewed because of the "tail" trailing off to the right.
+    - If the mean is SMALLER than the median it is negatively skewed because of the "tail" trailing off to the left.
+    - Not all distributions are skewed. Distributions such as cost, income, etc. are almost always skewed, sometimes dramatically. Other distributions such as height tend to more closely follow a normal distribution.
 
 ```{r}
+
 ## YOUR CODE HERE!
 
 ```
@@ -88,7 +93,7 @@ There are different ways to calculate skewness. We will use the alternative Pear
 
 `Skew = 3 * (Mean – Median) / Standard Deviation`
 
-Can you calculate the skew of charges . . .  without just typing the numbers into the R console?
+Can you calculate the skew of charges,  without just typing the numbers into the R console?
 
 ```{r}
 ## Hint: You can use columns you've already defined . . . . 
@@ -102,36 +107,35 @@ insurance |>
     )
 ```
 
-An easy hack to remember positive/negative skew.
-
-- If the mean is LARGER than the median it is positively skewed because of the long tail to the right.
-- If the mean is SMALLER than the median it is negatively skewed because of the long tail to the left.
-
-Hint: Numeric distributions are generally positively skewed. . . . 
-
 Reusing the code above, draw a density plot of BMI and calculate the skew of BMI. In Canvas, tell me which variable, BMI or Charges is MORE skewed. Use your plots and skew calculations to support your answer.
 
 ```{r}
+
 ## YOUR CODE HERE!!!
 
 ```
 
-# Task 04
+## Task 04
 
 - **Question:** Look at the age variable. What kinds of members are not in this data set? When we later develop a model to predict cost, what limits will this place on our model?
 - **Answer:**
-
-To do this, look at the distribution plot of age. I also recommend you look at the min, max, and average age of members.
+- Helpful Hint:
+    - Look at your density plot of age.
+    - I also recommend you look at the min, max, and average age of members.
+    - There is an important age group not present in this data.
 
 ```{r}
+
 ## YOUR CODE HERE!
 
 ```
 
-# Task 05
+## Task 05
 
 - **Question:** It is possible to calculate a percentage using the dplyr verbs. Use the code below to calculate the percentage of members which are female.
 - **Answer:**
+- Helpful Hint:
+    - This is an important skill which we will use going forward.
 
 ```{r}
 ## First we count the number of members who are male/female.
@@ -152,45 +156,53 @@ insurance |>
 ## If all goes well, you will get the same answer . . . . 
 ```
 
-# Task 06
+## Task 06
 
-- **Question:** Which region has the highest average charges? Which region has the highest average BMI?
+- **Question:** Which region has the highest average charges?
+- **Answer:**
+
+- **Question:** Which region has the highest average BMI?
 - **Answer:**
 
 ```{r}
+
 ## YOUR CODE HERE!
 
 ```
 
-# Task 07
+## Task 07
 
 - **Question:** Draw a scatter plot showing charges as a function of BMI.
 - **Answer:**
-
-This means you plot charges as the dependent variable (y-axis) and BMI as the independent variable (x-axis).
+- Helpful Hints:
+    - To complete this task, plot charges as the dependent variable (y-axis) and BMI as the independent variable (x-axis).
 
 ```{r}
+
 ## YOUR CODE HERE!
 
 ```
 
 
 
-# Task 08
+## Task 08
 
 - **Question:** It is complicated, but there is a correlation between BMI and insurance charges. In fact, there appear to be at least two groups in this plot. Which categorical variable best explains the apparent existence of these groups?
-- **Answer:** Your answer should be sex, smoker, or region.
+- **Answer:** 
+    - Your answer should be sex, smoker, or region.
 
 In other words, which categorical variables group together best to tell a story? Take your plot from above, and use the `color` parameter of the `aes()` function. Look at all the categorical variables and choose the plot that tells the most compelling story about our data. Which variable best "explains" our groupings?
 
 
 
-# Task 09
+## Task 09
 
-- **Question:** Create a new scatter plot. This time, plot charges as a function of age. And you should see THREE groups. Which categorical variable best explains these three groups?
-- **Answer:** Your answer should be sex, smoker, or region.
+- **Question:** Create a new scatter plot. This time, plot charges as a function of age. You should see three groups. Which categorical variable best explains these three groups?
+- **Answer:** 
+    - Your answer should be sex, smoker, or region.
 
 ```{r}
+
 ## YOUR ANSWER HERE!
 
 ```
