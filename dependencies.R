@@ -4,6 +4,7 @@ p <- c(
   "httpgd",
   "knitr",
   "markdown",
+  "pacman",
   "rio",
   "rmarkdown",
   "tidyr",
